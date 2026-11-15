@@ -29,17 +29,23 @@ export default function CctvAnalysis() {
 
   return (
     <div className="space-y-5">
-      <div className="flex flex-wrap items-center justify-between gap-3 pb-3 border-b border-[#D6E6F2]">
-        <div>
-          <h1 className="text-xl font-bold text-[#1A2F4C]">CCTV Vision & Posture AI</h1>
-          <p className="text-xs text-[#4A6B8F]">Real-time kinematic posture classification and fall risk detection</p>
+      {/* Hero banner using CSS gradient - no broken image */}
+      <div className="relative rounded-2xl overflow-hidden h-40 flex items-center px-8"
+        style={{background:'linear-gradient(135deg,#D6E6F2 0%,#8DB4D6 50%,#D6E6F2 100%)'}}>
+        <div className="absolute inset-0 opacity-10"
+          style={{backgroundImage:'radial-gradient(circle at 20% 50%, #1A2F4C 1px, transparent 1px)',backgroundSize:'24px 24px'}} />
+        <div className="relative z-10">
+          <span className="inline-flex items-center gap-1.5 px-3 py-0.5 rounded-full bg-white/60 text-[#1A2F4C] text-[11px] font-bold mb-2">
+            <span className="w-2 h-2 rounded-full bg-[#38bdf8] animate-pulse" />
+            YOLOv8-Pose Active
+          </span>
+          <h1 className="text-3xl font-extrabold text-[#1A2F4C]">
+            CCTV Vision &amp; Posture AI
+          </h1>
+          <p className="text-sm text-[#4A6B8F] mt-1">Real-time posture classification &amp; fall detection</p>
         </div>
-        <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-[#D6E6F2] text-[#1A2F4C]">
-          <span className="w-2 h-2 rounded-full bg-[#38bdf8] animate-pulse" />
-          YOLOv8-Pose Active
-        </span>
+        <div className="absolute right-8 top-1/2 -translate-y-1/2 text-7xl opacity-20">📹</div>
       </div>
-
       <div className="grid grid-cols-1 lg:grid-cols-12 gap-5">
         <div className="lg:col-span-8 space-y-4">
           <div className="card p-4 bg-slate-950 border-slate-900 text-white shadow-xl">
@@ -95,7 +101,7 @@ export default function CctvAnalysis() {
             </div>
             <div className="card p-3.5 text-center border-[#D6E6F2]">
               <div className="text-[10px] text-[#4A6B8F] font-bold uppercase">Fall Events</div>
-              <div className="text-xl font-bold text-emerald-600 mt-0.5">0</div>
+              <div className="text-xl font-bold text-blue-600 mt-0.5">0</div>
             </div>
           </div>
         </div>

@@ -183,3 +183,4 @@ export default function AyuvaraLogo({ size = 'md', className = '', showText = tr
     </div>
   )
 }
+

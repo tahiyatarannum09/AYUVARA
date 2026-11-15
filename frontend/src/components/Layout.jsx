@@ -29,15 +29,13 @@ export default function Layout({ children }) {
   return (
     <div className={`flex h-screen bg-[#F2F7FB] text-[#1A2F4C] overflow-hidden font-sans ${seniorFontSize ? 'text-base' : 'text-sm'}`}>
       {/* ── SIDEBAR ─────────────────────────────────────────────────────── */}
-      <aside className="hidden lg:flex flex-col w-60 bg-white border-r border-[#D6E6F2] flex-shrink-0 z-20 shadow-sm">
+      <aside className="hidden lg:flex flex-col w-60 bg-white border-r border-[#D6E6F2] flex-shrink-0 z-20" style={{boxShadow:'4px 0 24px rgba(141,180,214,0.12)'}}>
         {/* Ayuvara Logo Header */}
         <div className="h-16 px-5 border-b border-[#D6E6F2] flex items-center justify-between">
           <div className="flex items-center gap-2.5">
             <AyuvaraLogo size="sm" showText={false} />
             <div>
-              <div className="font-serif text-base font-black tracking-[0.22em] uppercase text-[#1A2F4C]">
-                AYUVARA
-              </div>
+              <div className="font-serif text-base font-black tracking-[0.22em] uppercase text-[#1A2F4C]">AYUVARA</div>
               <div className="text-[10px] text-[#4A6B8F] font-medium tracking-wide">ElderCare Companion</div>
             </div>
           </div>
@@ -46,7 +44,7 @@ export default function Layout({ children }) {
         {/* Minimal Telemetry Pill */}
         <div className="p-3 mx-3 mt-3 rounded-2xl bg-[#F2F7FB] border border-[#D6E6F2]">
           <div className="text-[10px] uppercase font-bold text-[#4A6B8F] tracking-wider mb-1.5 flex items-center justify-between">
-            <span>Status</span>
+            <span>Live Status</span>
             <span className="w-2 h-2 rounded-full bg-[#38bdf8] animate-pulse" />
           </div>
           <div className="flex justify-between items-center text-xs">
@@ -77,7 +75,7 @@ export default function Layout({ children }) {
         </nav>
 
         {/* Footer */}
-        <div className="p-3 border-t border-[#D6E6F2] bg-[#F2F7FB]/50">
+        <div className="p-3 border-t border-[#D6E6F2]">
           <button
             onClick={() => { logout(); navigate('/') }}
             className="w-full flex items-center justify-center gap-2 px-3 py-2 rounded-xl text-xs font-semibold text-[#4A6B8F] hover:text-[#1A2F4C] hover:bg-[#D6E6F2] transition-all border border-[#D6E6F2]"
