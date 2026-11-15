@@ -29,9 +29,9 @@ async def lifespan(app: FastAPI):
     t1.cancel(); t2.cancel()
 
 app = FastAPI(
-    title="ElderCare Meds API",
-    description="Enterprise-grade Elderly Care and Medication Adherence Engine",
-    version="1.2.0",
+    title="AYUVARA Elderly Care & Medication Management Platform API",
+    description="Smart, interconnected healthcare ecosystem designed to empower elderly individuals, caregivers, and physicians with proactive email alerts, drug interaction checks, and YOLOv8-pose kinematic safety monitoring.",
+    version="2.0.0",
     lifespan=lifespan
 )
 
