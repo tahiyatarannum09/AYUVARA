@@ -1,22 +1,32 @@
 import { useState, useEffect } from 'react'
 import AyuvaraLogo from './AyuvaraLogo'
-import { Sparkles, ArrowRight } from 'lucide-react'
+import { Sparkles, ArrowRight, Volume2 } from 'lucide-react'
+import { playLogoChime, playCapsuleSnap } from '../utils/audio'
 
 export default function AyuvaraIntro({ onComplete }) {
   const [stage, setStage] = useState(0) // 0: start, 1: eye & legs, 2: capsule snap, 3: text, 4: exit
 
   useEffect(() => {
-    // Stage 1: Eye drops & legs slide in
-    const t1 = setTimeout(() => setStage(1), 100)
-    // Stage 2: Capsule snaps in
-    const t2 = setTimeout(() => setStage(2), 700)
+    // Stage 1: Eye drops & legs slide in + Logo Chime
+    const t1 = setTimeout(() => {
+      setStage(1)
+      playLogoChime()
+    }, 150)
+
+    // Stage 2: Capsule snaps in + Capsule Snap Audio
+    const t2 = setTimeout(() => {
+      setStage(2)
+      playCapsuleSnap()
+    }, 750)
+
     // Stage 3: Logo text glows
-    const t3 = setTimeout(() => setStage(3), 1300)
+    const t3 = setTimeout(() => setStage(3), 1350)
+
     // Stage 4: Fade out intro
     const t4 = setTimeout(() => {
       setStage(4)
       setTimeout(onComplete, 500)
-    }, 2400)
+    }, 2500)
 
     return () => {
       clearTimeout(t1)

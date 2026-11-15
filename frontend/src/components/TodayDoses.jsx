@@ -1,7 +1,8 @@
 import { useState, useEffect } from 'react'
 import { api } from '../api'
 import { useApp } from '../context'
-import { Check, CheckCircle2, Clock, AlertCircle } from 'lucide-react'
+import { Check, CheckCircle2, Clock, AlertCircle, Volume2 } from 'lucide-react'
+import { playTakeDoseSuccess, playMedicationReminder } from '../utils/audio'
 
 // Ayuvara Capsule Palette (matching 3D logo with Cyan & Peach)
 const CAPSULE_PALETTES = [
@@ -40,6 +41,9 @@ export default function TodayDoses({ onRefresh }) {
 
   const mark = async (log_id, status) => {
     try {
+      if (status === 'taken') {
+        playTakeDoseSuccess()
+      }
       await api.markDose(log_id, status)
       load()
       onRefresh?.()
@@ -58,8 +62,18 @@ export default function TodayDoses({ onRefresh }) {
           <h3 className="text-sm font-bold text-[#1A2F4C]">Today's Medication Schedule</h3>
           <p className="text-xs text-[#4A6B8F]">Verified administration schedule</p>
         </div>
-        <div className="text-xs font-semibold text-[#1A2F4C] bg-[#D6E6F2] px-3 py-1 rounded-full">
-          {taken} of {total} Doses Ingested
+        <div className="flex items-center gap-2">
+          <button
+            onClick={() => playMedicationReminder()}
+            title="Play reminder chime audio"
+            className="px-2.5 py-1 rounded-full bg-[#F2F7FB] hover:bg-[#D6E6F2] border border-[#D6E6F2] text-[#4A6B8F] hover:text-[#1A2F4C] text-[11px] font-bold flex items-center gap-1 transition-colors"
+          >
+            <Volume2 size={12} className="text-[#38bdf8]" />
+            <span>Reminder Audio</span>
+          </button>
+          <div className="text-xs font-semibold text-[#1A2F4C] bg-[#D6E6F2] px-3 py-1 rounded-full">
+            {taken} of {total} Doses Ingested
+          </div>
         </div>
       </div>
 
