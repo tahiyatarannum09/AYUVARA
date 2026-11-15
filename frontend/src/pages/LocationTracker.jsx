@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react'
+import React, { useState, useEffect, useCallback, useMemo } from 'react'
 import { api } from '../api'
 import { useApp } from '../context'
 import { 
@@ -58,7 +58,7 @@ const ROOM_CONFIG = [
   }
 ]
 
-function IsometricResidence({ currentRoom, onSelectRoom, viewMode }) {
+const IsometricResidence = React.memo(function IsometricResidence({ currentRoom, onSelectRoom, viewMode }) {
   return (
     <div className="relative w-full overflow-hidden bg-gradient-to-b from-[#F2F7FB] via-white to-[#D6E6F2]/30 rounded-2xl border border-[#D6E6F2] p-4 shadow-sm">
       <svg
@@ -220,7 +220,7 @@ function IsometricResidence({ currentRoom, onSelectRoom, viewMode }) {
       </div>
     </div>
   )
-}
+})
 
 export default function LocationTracker() {
   const { patientId } = useApp()

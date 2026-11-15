@@ -1,9 +1,9 @@
-import { useState, useEffect } from 'react'
+import React, { useState, useEffect } from 'react'
 import { api } from '../api'
 import { useApp } from '../context'
 import { Sparkles, CheckCircle2, AlertTriangle, Award } from 'lucide-react'
 
-function IsometricVoxelMatrix({ data }) {
+const IsometricVoxelMatrix = React.memo(function IsometricVoxelMatrix({ data }) {
   const [hoveredDay, setHoveredDay] = useState(null)
   const safeData = Array.isArray(data) ? data : []
   if (!safeData.length) return <div className="text-[#4A6B8F] text-xs text-center py-6">No historical records available.</div>
@@ -122,7 +122,7 @@ function IsometricVoxelMatrix({ data }) {
       </div>
     </div>
   )
-}
+})
 
 export default function Adherence() {
   const { patientId } = useApp()

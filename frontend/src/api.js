@@ -267,6 +267,19 @@ function handleMockFallback(method, path, body) {
     return MOCK_STATE.mood_logs
   }
 
+  // 11. Emergency SOS
+  if (path.includes('/emergency/sos') && method === 'POST') {
+    return {
+      success: true,
+      message: 'Emergency SOS broadcasted to all Care Circle members and emergency services.',
+      dispatched_to: [
+        { name: 'James Williams (Son)', channel: 'SMS & Push', status: 'sent' },
+        { name: 'Sarah Chen (Caregiver)', channel: 'Phone Call Dispatch', status: 'connected' },
+        { name: 'City Emergency Services', channel: 'E911 Telemetry', status: 'standby' }
+      ]
+    }
+  }
+
   // 10. Patients Profile
   if (path.startsWith('/patients/')) {
     return MOCK_STATE.patient
@@ -321,4 +334,7 @@ export const api = {
   getLocationCurrent: (pid) => req('GET', `/location/${pid}/current`),
   getLocationHistory: (pid) => req('GET', `/location/${pid}/history`),
   updateLocation: (data) => req('POST', '/location/update', data),
+
+  // Emergency SOS
+  triggerSos: (patient_id) => req('POST', '/emergency/sos', { patient_id }),
 }

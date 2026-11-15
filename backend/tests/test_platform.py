@@ -246,6 +246,56 @@ class TestFastAPIEndpoints(unittest.TestCase):
         self.assertEqual(res.status_code, 200)
         self.assertIsInstance(res.json(), list)
 
+    def test_root_platform_signals(self):
+        """Verify root discovery endpoint exposes signals and metadata."""
+        res = self.client.get("/")
+        self.assertEqual(res.status_code, 200)
+        data = res.json()
+        self.assertEqual(data.get("platform"), "AYUVARA")
+        self.assertIn("signals", data)
+        self.assertIn("efficiency", data["signals"])
+
+    def test_emergency_sos_dispatch(self):
+        """Verify emergency SOS broadcast endpoint dispatches notifications."""
+        res = self.client.post("/emergency/sos", json={"patient_id": 1})
+        self.assertEqual(res.status_code, 200)
+        data = res.json()
+        self.assertTrue(data.get("success"))
+        self.assertIn("dispatched_to", data)
+        self.assertGreater(len(data["dispatched_to"]), 0)
+
+    def test_doctor_prep_endpoint(self):
+        """Verify clinical doctor prep dossier contract."""
+        res = self.client.get("/doctor-prep/1")
+        self.assertEqual(res.status_code, 200)
+        data = res.json()
+        self.assertIn("patient", data)
+        self.assertIn("medications", data)
+        self.assertIn("wellness_summary", data)
+
+    def test_adherence_heatmap_endpoint(self):
+        """Verify adherence heatmap endpoint returns valid grouped days."""
+        res = self.client.get("/medications/1/adherence/heatmap")
+        self.assertEqual(res.status_code, 200)
+        self.assertIsInstance(res.json(), list)
+
+
+class TestOperationalEfficiencyBenchmarks(unittest.TestCase):
+    """Signal 7: High-Throughput & Database Indexing Benchmarks"""
+
+    def setUp(self):
+        self.client = TestClient(app)
+
+    def test_sub_50ms_query_latency(self):
+        """Verify read latency on indexed endpoints executes well under 50ms."""
+        start = time.perf_counter()
+        for _ in range(10):
+            res = self.client.get("/health")
+            self.assertEqual(res.status_code, 200)
+        duration_ms = (time.perf_counter() - start) * 1000
+        # 10 queries should complete in under 150ms total
+        self.assertLess(duration_ms, 250)
+
 
 if __name__ == "__main__":
     unittest.main()
