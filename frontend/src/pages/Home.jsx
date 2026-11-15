@@ -264,6 +264,47 @@ export default function Home() {
         ))}
       </div>
 
+      {/* ── LIVE CCTV VISION SPOTLIGHT CARD ──────────────────────────────── */}
+      <div 
+        className="rounded-3xl p-5 sm:p-6 border border-[#8DB4D6]/40 flex flex-wrap items-center justify-between gap-5 relative overflow-hidden"
+        style={{
+          background: 'linear-gradient(135deg, #FFFFFF 0%, #F2F7FB 50%, #E3EFF8 100%)',
+          boxShadow: '0 12px 32px -8px rgba(141, 180, 214, 0.3)'
+        }}
+      >
+        <div className="flex items-center gap-4">
+          <div className="w-16 h-16 rounded-2xl bg-slate-900 border border-slate-800 flex items-center justify-center text-white relative flex-shrink-0 shadow-md">
+            <Video size={24} className="text-[#38bdf8]" />
+            <span className="absolute top-1.5 right-1.5 w-2.5 h-2.5 rounded-full bg-rose-500 animate-ping" />
+          </div>
+          <div>
+            <div className="flex items-center gap-2">
+              <span className="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full text-[10px] font-bold bg-[#D6E6F2] text-[#1A2F4C]">
+                <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
+                Live Camera · Living Room
+              </span>
+              <span className="text-xs font-mono text-[#4A6B8F]">24 FPS</span>
+            </div>
+            <h3 className="text-base font-extrabold text-[#1A2F4C] mt-1">
+              AI Vision &amp; Kinematic Posture: <span className="text-emerald-700">Sitting (96% Confidence)</span>
+            </h3>
+            <p className="text-xs text-[#4A6B8F] mt-0.5">
+              Continuous fall risk monitor active · 0 alerts logged today · Symmetrical gait detected
+            </p>
+          </div>
+        </div>
+
+        <div className="flex items-center gap-3">
+          <Link
+            to="/cctv"
+            className="btn-primary px-5 py-2.5 rounded-full text-xs font-bold shadow-md hover:shadow-lg flex items-center gap-1.5 transition-all"
+          >
+            <span>Open CCTV Station</span>
+            <span>→</span>
+          </Link>
+        </div>
+      </div>
+
       {/* ── CARE FEATURES PHOTO CARDS (PINTEREST STYLE) ───────────────────── */}
       <div>
         <div className="flex items-center justify-between mb-3.5">

@@ -69,7 +69,14 @@ export default function Layout({ children }) {
               }
             >
               <Icon size={16} className="opacity-80" />
-              <span>{label}</span>
+              <div className="flex items-center justify-between w-full">
+                <span>{label}</span>
+                {to === '/cctv' && (
+                  <span className="px-1.5 py-0.2 rounded-full text-[9px] font-black bg-rose-500 text-white animate-pulse">
+                    LIVE
+                  </span>
+                )}
+              </div>
             </NavLink>
           ))}
         </nav>
