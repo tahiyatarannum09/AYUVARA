@@ -9,10 +9,14 @@
 
 [![Google for Developers](https://img.shields.io/badge/Google%20for%20Developers-Build%20with%20AI-4285F4?style=for-the-badge&logo=google)](https://developers.google.com/)
 [![PromptWars x Catalyst](https://img.shields.io/badge/Challenge-PromptWars%20%C3%97%20Catalyst-EA4335?style=for-the-badge)](https://catalyst.google.com/)
+[![Live Demo](https://img.shields.io/badge/Live%20Demo-ayuvara.netlify.app-00C7B7?style=for-the-badge&logo=netlify)](https://ayuvara.netlify.app/)
 [![Automated Tests](https://img.shields.io/badge/Tests-17%2F17%20Passing%20(100%25)-34A853?style=for-the-badge)](tests/test_platform.py)
 [![Security Hardened](https://img.shields.io/badge/Security-Salted%20SHA--256%20%2B%20Rate%20Limit-1A2F4C?style=for-the-badge)](#-enterprise-grade-production-security)
 [![Accessibility](https://img.shields.io/badge/Accessibility-WCAG%202.1%20AA%20Compliant-8DB4D6?style=for-the-badge)](#-accessibility--senior-centered-design)
-[![Deploy Netlify](https://img.shields.io/badge/Deploy-Netlify%20Ready-00C7B7?style=for-the-badge&logo=netlify)](https://www.netlify.com/)
+
+<p align="center">
+  🌐 <strong>Live Deployed Web Application:</strong> <a href="https://ayuvara.netlify.app/"><strong>https://ayuvara.netlify.app/</strong></a> (Passcode: <code>1234</code>)
+</p>
 
 <p align="center">
   <strong>An autonomous, multi-stakeholder healthcare ecosystem engineered around the elderly individual as the primary decision-maker, uniting family caregivers, caretakers, and physicians with proactive alerts and computer vision safety shielding.</strong>
