@@ -1,8 +1,9 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom'
 import { AppProvider, useApp } from './context'
 import Layout from './components/Layout'
 import PasscodeLogin from './components/PasscodeLogin'
+import AyuvaraIntro from './components/AyuvaraIntro'
 import Home from './pages/Home'
 import Medications from './pages/Medications'
 import Appointments from './pages/Appointments'
@@ -30,15 +31,12 @@ class ErrorBoundary extends React.Component {
   render() {
     if (this.state.hasError) {
       return (
-        <div className="min-h-screen bg-slate-100 flex items-center justify-center p-6 text-slate-800">
-          <div className="card max-w-md w-full bg-white p-6 border-slate-300 shadow">
-            <h2 className="text-base font-bold text-slate-900 mb-2">Portal Interface Notice</h2>
-            <p className="text-xs text-slate-600 mb-4">
-              An interface error occurred while rendering the current module.
+        <div className="min-h-screen bg-[#F2F7FB] flex items-center justify-center p-6 text-[#1A2F4C]">
+          <div className="card max-w-md w-full bg-white p-6 shadow-md border-[#D6E6F2]">
+            <h2 className="text-base font-bold text-[#1A2F4C] mb-2">Notice</h2>
+            <p className="text-xs text-[#4A6B8F] mb-4">
+              An interface error occurred while rendering the current view.
             </p>
-            <pre className="p-3 bg-slate-50 border border-slate-200 rounded text-[11px] font-mono text-slate-700 overflow-x-auto mb-4">
-              {this.state.error?.message || 'Unknown error'}
-            </pre>
             <button
               onClick={() => {
                 sessionStorage.clear()
@@ -61,8 +59,8 @@ function ProtectedRoutes() {
 
   if (authLoading) {
     return (
-      <div className="min-h-screen bg-slate-100 flex items-center justify-center font-mono text-xs text-slate-500">
-        Loading patient profile...
+      <div className="min-h-screen bg-[#F2F7FB] flex items-center justify-center font-mono text-xs text-[#4A6B8F]">
+        Loading profile...
       </div>
     )
   }
@@ -90,8 +88,18 @@ function ProtectedRoutes() {
 }
 
 export default function App() {
+  const [introDone, setIntroDone] = useState(() => {
+    return sessionStorage.getItem('ayuvara_intro_seen') === 'true'
+  })
+
+  const handleIntroComplete = () => {
+    sessionStorage.setItem('ayuvara_intro_seen', 'true')
+    setIntroDone(true)
+  }
+
   return (
     <ErrorBoundary>
+      {!introDone && <AyuvaraIntro onComplete={handleIntroComplete} />}
       <AppProvider>
         <BrowserRouter>
           <ProtectedRoutes />

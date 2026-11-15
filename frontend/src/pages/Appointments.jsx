@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import { api } from '../api'
 import { useApp } from '../context'
-import { Plus, Trash2, Edit3, Calendar, X, CheckCircle, Clock, Sparkles } from 'lucide-react'
+import { Plus, Trash2, Edit3, Calendar, X, CheckCircle } from 'lucide-react'
 
 function ApptForm({ initial, patientId, onSave, onClose }) {
   const [form, setForm] = useState(initial || {
@@ -22,50 +22,46 @@ function ApptForm({ initial, patientId, onSave, onClose }) {
   }
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-emerald-950/60 backdrop-blur-sm">
-      <div className="card w-full max-w-md bg-white border-emerald-900/20 shadow-2xl max-h-[90vh] overflow-y-auto rounded-2xl">
-        <div className="flex items-center justify-between pb-3 mb-3 border-b border-emerald-900/10">
-          <h3 className="text-sm font-extrabold text-emerald-950">{initial ? 'Modify Appointment' : 'Schedule Clinical Consultation'}</h3>
-          <button onClick={onClose} className="p-1 rounded-lg text-emerald-800 hover:bg-emerald-50"><X size={16} /></button>
+    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-slate-900/40 backdrop-blur-sm">
+      <div className="card w-full max-w-md bg-white border-[#D6E6F2] shadow-2xl max-h-[90vh] overflow-y-auto rounded-2xl">
+        <div className="flex items-center justify-between pb-3 mb-3 border-b border-[#D6E6F2]">
+          <h3 className="text-sm font-bold text-[#1A2F4C]">{initial ? 'Edit Consultation' : 'Schedule Consultation'}</h3>
+          <button onClick={onClose} className="p-1 rounded-lg text-[#4A6B8F] hover:bg-[#F2F7FB]"><X size={16} /></button>
         </div>
         <div className="space-y-3">
           <div>
-            <label className="label">Clinician / Attending Physician *</label>
-            <input className="input font-bold" value={form.doctor_name} onChange={e=>setForm(f=>({...f,doctor_name:e.target.value}))} placeholder="e.g. Dr. Priya Sharma" />
+            <label className="label">Physician Name *</label>
+            <input className="input font-bold" value={form.doctor_name} onChange={e=>setForm(f=>({...f,doctor_name:e.target.value}))} placeholder="e.g. Dr. Robert Chen" />
           </div>
           <div className="grid grid-cols-2 gap-3">
             <div>
-              <label className="label">Medical Specialty</label>
+              <label className="label">Specialty</label>
               <input className="input" value={form.specialty} onChange={e=>setForm(f=>({...f,specialty:e.target.value}))} placeholder="e.g. Cardiology" />
             </div>
             <div>
-              <label className="label">Hospital / Practice</label>
-              <input className="input" value={form.clinic} onChange={e=>setForm(f=>({...f,clinic:e.target.value}))} placeholder="Helix Medical Center" />
+              <label className="label">Clinic / Hospital</label>
+              <input className="input" value={form.clinic} onChange={e=>setForm(f=>({...f,clinic:e.target.value}))} placeholder="Health Medical Center" />
             </div>
           </div>
           <div className="grid grid-cols-2 gap-3">
             <div>
-              <label className="label">Consultation Date *</label>
+              <label className="label">Date *</label>
               <input type="date" className="input font-mono" value={form.appt_date} onChange={e=>setForm(f=>({...f,appt_date:e.target.value}))} />
             </div>
             <div>
-              <label className="label">Scheduled Time</label>
+              <label className="label">Time</label>
               <input type="time" className="input font-mono" value={form.appt_time} onChange={e=>setForm(f=>({...f,appt_time:e.target.value}))} />
             </div>
           </div>
           <div>
-            <label className="label">Clinic Address / Suite</label>
-            <input className="input" value={form.address} onChange={e=>setForm(f=>({...f,address:e.target.value}))} placeholder="Building B, Suite 402" />
-          </div>
-          <div>
-            <label className="label">Fasting Requirements / Prep Instructions</label>
-            <textarea className="input h-18 resize-none" value={form.notes} onChange={e=>setForm(f=>({...f,notes:e.target.value}))} placeholder="e.g. 10-hour fasting blood glucose test, bring recent telemetry logs" />
+            <label className="label">Preparation Notes</label>
+            <input className="input" value={form.notes} onChange={e=>setForm(f=>({...f,notes:e.target.value}))} placeholder="e.g. Fasting glucose check" />
           </div>
         </div>
-        <div className="flex gap-2.5 mt-6 pt-3 border-t border-emerald-100">
+        <div className="flex gap-2.5 mt-5 pt-3 border-t border-[#D6E6F2]">
           <button onClick={onClose} className="btn-ghost flex-1 py-2 text-xs">Cancel</button>
           <button onClick={save} disabled={saving || !form.doctor_name || !form.appt_date} className="btn-primary flex-1 py-2 text-xs font-bold">
-            {saving ? 'Saving...' : initial ? 'Save Changes' : 'Confirm Appointment'}
+            {saving ? 'Saving...' : 'Confirm'}
           </button>
         </div>
       </div>
@@ -88,7 +84,7 @@ export default function Appointments() {
   useEffect(() => { load() }, [patientId])
 
   const del = async (id) => {
-    if (!confirm('Remove this appointment record?')) return
+    if (!confirm('Remove this appointment?')) return
     await api.deleteAppointment(id)
     load()
   }
@@ -98,125 +94,65 @@ export default function Appointments() {
     load()
   }
 
-  const upcoming = appts.filter(a => !a.is_completed).sort((a,b) => a.appt_date.localeCompare(b.appt_date))
-  const past = appts.filter(a => a.is_completed)
+  const upcoming = appts.filter(a => !a.is_completed)
 
   return (
     <div className="space-y-5">
-      <div className="flex flex-wrap items-center justify-between gap-3 pb-3 border-b border-emerald-900/10">
+      <div className="flex flex-wrap items-center justify-between gap-3 pb-3 border-b border-[#D6E6F2]">
         <div>
-          <div className="flex items-center gap-2">
-            <span className="badge badge-subtle">Care Coordination</span>
-            <span className="text-xs text-emerald-800 font-mono">{upcoming.length} Upcoming Scheduled</span>
-          </div>
-          <h1 className="text-xl font-bold text-emerald-950 mt-1">Clinical Consultations & Specialist Visits</h1>
-          <p className="text-xs text-emerald-800/80">Proactive doctor appointments, preparation notes, and clinical follow-ups</p>
+          <h1 className="text-xl font-bold text-[#1A2F4C]">Doctor Appointments</h1>
+          <p className="text-xs text-[#4A6B8F]">Upcoming medical visits and specialist checkups</p>
         </div>
-        <button onClick={() => { setEditing(null); setShowForm(true) }} className="btn-primary text-xs py-2 px-4 shadow-md">
-          <Plus size={15} /> Schedule Consultation
+        <button onClick={() => { setEditing(null); setShowForm(true) }} className="btn-primary text-xs py-2 px-4 shadow-sm">
+          <Plus size={14} /> Schedule Visit
         </button>
       </div>
 
-      {loading ? <div className="card animate-pulse h-48 bg-emerald-50/50" /> : (
-        <div className="space-y-5">
-          <div className="card p-0 overflow-hidden">
-            <div className="px-4 py-3 bg-emerald-50/60 border-b border-emerald-100 flex items-center justify-between">
-              <span className="text-xs font-bold uppercase text-emerald-950 tracking-wider">
-                Upcoming Doctor Visits ({upcoming.length})
-              </span>
-              <span className="text-[10px] text-emerald-700 font-mono">Auto Email Reminders Enabled</span>
-            </div>
-            <table className="clinical-table">
-              <thead>
-                <tr>
-                  <th>Date & Time</th>
-                  <th>Physician</th>
-                  <th>Specialty</th>
-                  <th>Facility / Address</th>
-                  <th>Clinical Preparation</th>
-                  <th>Status</th>
-                  <th className="text-right">Actions</th>
+      {loading ? <div className="card animate-pulse h-40 bg-[#F2F7FB]" /> : (
+        <div className="card p-0 overflow-hidden">
+          <table className="clinical-table">
+            <thead>
+              <tr>
+                <th>Date & Time</th>
+                <th>Physician</th>
+                <th>Specialty</th>
+                <th>Facility</th>
+                <th>Prep Instructions</th>
+                <th className="text-right">Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              {upcoming.map(a => (
+                <tr key={a.id} className="hover:bg-[#F2F7FB] transition-colors">
+                  <td className="font-mono font-bold text-[#1A2F4C] whitespace-nowrap">
+                    {a.appt_date} {a.appt_time && `at ${a.appt_time}`}
+                  </td>
+                  <td className="font-bold text-[#1A2F4C]">Dr. {a.doctor_name}</td>
+                  <td className="text-[#4A6B8F]">{a.specialty}</td>
+                  <td className="text-[#1A2F4C]">{a.clinic}</td>
+                  <td className="text-xs text-[#4A6B8F] italic">{a.notes || 'Routine checkup'}</td>
+                  <td className="text-right whitespace-nowrap">
+                    <button onClick={() => complete(a)} className="text-xs text-[#38bdf8] hover:text-[#0284c7] font-bold mr-3">
+                      Mark Done
+                    </button>
+                    <button onClick={() => { setEditing(a); setShowForm(true) }} className="p-1.5 text-[#4A6B8F] hover:text-[#1A2F4C] mr-1">
+                      <Edit3 size={13} />
+                    </button>
+                    <button onClick={() => del(a.id)} className="p-1.5 text-rose-500 hover:text-rose-700">
+                      <Trash2 size={13} />
+                    </button>
+                  </td>
                 </tr>
-              </thead>
-              <tbody>
-                {upcoming.map(a => (
-                  <tr key={a.id} className="hover:bg-emerald-50/40 transition-colors">
-                    <td className="font-mono font-bold text-emerald-950 whitespace-nowrap">
-                      {a.appt_date} {a.appt_time && `at ${a.appt_time}`}
-                    </td>
-                    <td className="font-extrabold text-emerald-950">Dr. {a.doctor_name}</td>
-                    <td className="text-emerald-800 font-medium">{a.specialty}</td>
-                    <td>
-                      <div className="text-emerald-950 font-bold">{a.clinic}</div>
-                      <div className="text-[10px] text-emerald-700/80">{a.address}</div>
-                    </td>
-                    <td className="text-xs text-emerald-800/90 italic">{a.notes || 'Standard clinical review'}</td>
-                    <td>
-                      <span className="badge badge-subtle text-[10px]">
-                        Confirmed
-                      </span>
-                    </td>
-                    <td className="text-right whitespace-nowrap">
-                      <button onClick={() => complete(a)} className="text-xs text-emerald-700 hover:text-emerald-950 font-bold mr-3 underline">
-                        Mark Done
-                      </button>
-                      <button onClick={() => { setEditing(a); setShowForm(true) }} className="p-1.5 text-emerald-700 hover:text-emerald-950 mr-1">
-                        <Edit3 size={14} />
-                      </button>
-                      <button onClick={() => del(a.id)} className="p-1.5 text-rose-500 hover:text-rose-700">
-                        <Trash2 size={14} />
-                      </button>
-                    </td>
-                  </tr>
-                ))}
-                {upcoming.length === 0 && (
-                  <tr>
-                    <td colSpan="7" className="text-center py-8 text-emerald-800/60 text-xs">
-                      No upcoming doctor consultations recorded.
-                    </td>
-                  </tr>
-                )}
-              </tbody>
-            </table>
-          </div>
-
-          {past.length > 0 && (
-            <div className="card p-0 overflow-hidden opacity-85">
-              <div className="px-4 py-2.5 bg-emerald-50/40 border-b border-emerald-100 text-xs font-bold uppercase text-emerald-900 tracking-wider">
-                Completed Consultations History ({past.length})
-              </div>
-              <table className="clinical-table">
-                <thead>
-                  <tr>
-                    <th>Date</th>
-                    <th>Physician</th>
-                    <th>Specialty</th>
-                    <th>Facility</th>
-                    <th>Status</th>
-                    <th className="text-right">Action</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {past.map(a => (
-                    <tr key={a.id}>
-                      <td className="font-mono text-emerald-800">{a.appt_date}</td>
-                      <td className="font-bold text-emerald-950">Dr. {a.doctor_name}</td>
-                      <td className="text-emerald-800">{a.specialty}</td>
-                      <td className="text-emerald-800/80">{a.clinic}</td>
-                      <td>
-                        <span className="badge bg-emerald-50 text-emerald-800 border-emerald-200">Completed</span>
-                      </td>
-                      <td className="text-right">
-                        <button onClick={() => complete(a)} className="text-xs text-emerald-700 hover:text-emerald-900 font-semibold underline">
-                          Reopen
-                        </button>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          )}
+              ))}
+              {upcoming.length === 0 && (
+                <tr>
+                  <td colSpan="6" className="text-center py-8 text-[#4A6B8F] text-xs">
+                    No upcoming doctor consultations recorded.
+                  </td>
+                </tr>
+              )}
+            </tbody>
+          </table>
         </div>
       )}
 

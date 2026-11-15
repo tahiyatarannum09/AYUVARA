@@ -5,57 +5,57 @@
 @layer base {
   html { 
     font-size: 14px; 
-    letter-spacing: -0.015em;
+    letter-spacing: -0.01em;
   }
   body {
-    background-color: #f7faf8;
-    color: #0f291e;
+    background-color: #F2F7FB;
+    color: #1A2F4C;
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
   }
-  h1 { @apply text-2xl font-bold tracking-tight text-emerald-950; }
-  h2 { @apply text-lg font-bold tracking-tight text-emerald-950; }
-  h3 { @apply text-sm font-semibold tracking-tight text-emerald-900; }
+  h1 { @apply text-2xl font-bold tracking-tight text-[#1A2F4C]; }
+  h2 { @apply text-lg font-bold tracking-tight text-[#1A2F4C]; }
+  h3 { @apply text-sm font-semibold tracking-tight text-[#233D5D]; }
 }
 
 @layer components {
-  /* Classy Helix Luxury Clinical Card with 3D Depth */
+  /* Clean Airy Soft Blue Card */
   .card {
-    background: #ffffff;
-    border: 1px solid rgba(16, 185, 129, 0.12);
-    border-radius: 0.875rem;
+    background: #FFFFFF;
+    border: 1px solid rgba(141, 180, 214, 0.28);
+    border-radius: 1rem;
     padding: 1.25rem;
-    box-shadow: 0 10px 25px -5px rgba(6, 78, 59, 0.05), 0 8px 10px -6px rgba(6, 78, 59, 0.02);
+    box-shadow: 0 10px 25px -5px rgba(141, 180, 214, 0.18), 0 4px 10px -4px rgba(141, 180, 214, 0.08);
     transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.2s cubic-bezier(0.16, 1, 0.3, 1);
   }
   .card-hover:hover {
     transform: translateY(-2px);
-    box-shadow: 0 15px 30px -5px rgba(6, 78, 59, 0.1), 0 10px 12px -5px rgba(6, 78, 59, 0.04);
+    box-shadow: 0 16px 32px -6px rgba(141, 180, 214, 0.26), 0 6px 12px -4px rgba(141, 180, 214, 0.12);
   }
 
-  /* 3D Capsule Pill */
+  /* 3D Ayuvara Bi-Color Capsule */
   .pill-capsule-3d {
     position: relative;
-    width: 64px;
-    height: 26px;
-    border-radius: 13px;
+    width: 60px;
+    height: 24px;
+    border-radius: 12px;
     display: inline-flex;
     overflow: hidden;
-    box-shadow: inset 0 2px 4px rgba(255,255,255,0.7), 0 4px 8px rgba(0,0,0,0.15), inset 0 -2px 4px rgba(0,0,0,0.2);
+    box-shadow: inset 0 2px 4px rgba(255,255,255,0.8), 0 4px 8px rgba(26,47,76,0.12), inset 0 -2px 4px rgba(0,0,0,0.15);
     transition: transform 0.25s ease;
   }
   .pill-capsule-3d:hover {
-    transform: scale(1.08) rotate(5deg);
+    transform: scale(1.08) rotate(4deg);
   }
 
-  /* Standard Clinical Helix Buttons */
+  /* Buttons */
   .btn {
     display: inline-flex;
     align-items: center;
     justify-content: center;
     gap: 0.4rem;
-    padding: 0.45rem 1rem;
+    padding: 0.45rem 1.1rem;
     border-radius: 9999px;
     font-weight: 600;
     font-size: 0.8125rem;
@@ -65,46 +65,46 @@
     user-select: none;
   }
   .btn-primary {
-    @apply btn text-white bg-emerald-900 border border-emerald-900 shadow-sm;
+    @apply btn text-white bg-[#1A2F4C] border border-[#1A2F4C] shadow-sm;
   }
   .btn-primary:hover {
-    @apply bg-emerald-800 border-emerald-800 -translate-y-0.5 shadow;
+    @apply bg-[#2A4B7C] border-[#2A4B7C] -translate-y-0.5 shadow;
+  }
+  .btn-soft {
+    @apply btn text-[#1A2F4C] bg-[#D6E6F2] border border-[#8DB4D6]/40 shadow-sm;
+  }
+  .btn-soft:hover {
+    @apply bg-[#c2dcf0] -translate-y-0.5;
   }
   .btn-ghost {
-    @apply btn text-emerald-900 bg-white border border-emerald-200 shadow-sm;
+    @apply btn text-[#1A2F4C] bg-white border border-[#8DB4D6]/30 shadow-sm;
   }
   .btn-ghost:hover {
-    @apply bg-emerald-50 text-emerald-950 border-emerald-300;
+    @apply bg-[#F2F7FB] text-[#1A2F4C] border-[#8DB4D6];
   }
   .btn-success {
-    @apply btn text-white bg-emerald-600 border border-emerald-600 shadow-sm;
+    @apply btn text-white bg-[#0ea5e9] border border-[#0ea5e9] shadow-sm;
   }
   .btn-success:hover {
-    @apply bg-emerald-700 -translate-y-0.5 shadow;
-  }
-  .btn-danger {
-    @apply btn text-rose-800 bg-rose-50 border border-rose-200;
-  }
-  .btn-danger:hover {
-    @apply bg-rose-100 text-rose-900;
+    @apply bg-[#0284c7] -translate-y-0.5 shadow;
   }
 
-  /* Enterprise Input */
+  /* Inputs */
   .input {
     width: 100%;
     padding: 0.5rem 0.875rem;
-    border-radius: 0.5rem;
-    background: #ffffff;
-    border: 1px solid #cbd5e1;
-    color: #0f291e;
+    border-radius: 0.6rem;
+    background: #FFFFFF;
+    border: 1px solid #D6E6F2;
+    color: #1A2F4C;
     font-size: 0.8125rem;
     line-height: 1.25rem;
     transition: border-color 0.15s ease, box-shadow 0.15s ease;
   }
   .input:focus {
     outline: none;
-    border-color: #059669;
-    box-shadow: 0 0 0 3px rgba(16, 185, 129, 0.18);
+    border-color: #8DB4D6;
+    box-shadow: 0 0 0 3px rgba(141, 180, 214, 0.3);
   }
   .label {
     display: block;
@@ -112,11 +112,11 @@
     font-weight: 700;
     text-transform: uppercase;
     letter-spacing: 0.06em;
-    color: #065f46;
+    color: #4A6B8F;
     margin-bottom: 0.25rem;
   }
 
-  /* Clinical Status Badges */
+  /* Soft Badges */
   .badge {
     display: inline-flex;
     align-items: center;
@@ -129,85 +129,32 @@
     text-transform: uppercase;
   }
   .badge-subtle {
-    background: #f0fdf4;
-    color: #166534;
-    border: 1px solid #bbf7d0;
+    background: #D6E6F2;
+    color: #1A2F4C;
+    border: 1px solid rgba(141, 180, 214, 0.4);
   }
 
-  /* Strict Clinical Status Colors */
+  /* Status Badges */
   .status-taken {
-    background: #ecfdf5;
-    color: #065f46;
-    border: 1px solid #6ee7b7;
+    background: #e0f2fe;
+    color: #0369a1;
+    border: 1px solid #bae6fd;
   }
   .status-missed {
-    background: #fef2f2;
-    color: #991b1b;
-    border: 1px solid #fecaca;
+    background: #ffe4e6;
+    color: #be123c;
+    border: 1px solid #fecdd3;
   }
   .status-pending {
-    background: #fffbeb;
-    color: #92400e;
+    background: #fef3c7;
+    color: #b45309;
     border: 1px solid #fde68a;
   }
   .status-skipped {
-    background: #f8fafc;
+    background: #f1f5f9;
     color: #475569;
     border: 1px solid #cbd5e1;
   }
-}
-
-/* 3D Animations & Perspectives */
-@keyframes floatPin {
-  0%, 100% {
-    transform: translateY(0px) scale(1);
-  }
-  50% {
-    transform: translateY(-8px) scale(1.05);
-  }
-}
-
-@keyframes pulseRipple {
-  0% {
-    transform: scale(0.6);
-    opacity: 0.9;
-  }
-  100% {
-    transform: scale(1.8);
-    opacity: 0;
-  }
-}
-
-.animate-float-pin {
-  animation: floatPin 2.4s ease-in-out infinite;
-}
-
-.animate-ripple {
-  animation: pulseRipple 1.8s cubic-bezier(0, 0.2, 0.8, 1) infinite;
-}
-
-/* Isometric 3D Space */
-.isometric-stage {
-  perspective: 1200px;
-  transform-style: preserve-3d;
-}
-
-.isometric-view-3d {
-  transform: rotateX(55deg) rotateZ(-38deg) translateY(-20px);
-  transform-style: preserve-3d;
-  transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-.isometric-view-cinematic {
-  transform: rotateX(62deg) rotateZ(-22deg) scale(1.05);
-  transform-style: preserve-3d;
-  transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
-}
-
-.isometric-view-2d {
-  transform: rotateX(0deg) rotateZ(0deg);
-  transform-style: preserve-3d;
-  transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 /* Data Table Styling */
@@ -217,21 +164,21 @@ table.clinical-table {
   font-size: 0.8125rem;
 }
 table.clinical-table th {
-  background: #f0fdf4;
-  color: #166534;
+  background: #F2F7FB;
+  color: #4A6B8F;
   font-weight: 700;
   text-align: left;
   padding: 0.55rem 0.875rem;
-  border-bottom: 1px solid #dcfce7;
+  border-bottom: 1px solid #D6E6F2;
   text-transform: uppercase;
   font-size: 0.6875rem;
   letter-spacing: 0.04em;
 }
 table.clinical-table td {
   padding: 0.65rem 0.875rem;
-  border-bottom: 1px solid #f0fdf4;
-  color: #0f291e;
+  border-bottom: 1px solid #F2F7FB;
+  color: #1A2F4C;
 }
 table.clinical-table tr:hover td {
-  background: #f0fdf4;
+  background: #F2F7FB;
 }

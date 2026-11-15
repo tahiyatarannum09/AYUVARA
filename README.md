@@ -130,3 +130,4 @@ Open [http://localhost:5173](http://localhost:5173) in your browser.
 
 ---
 *Built for PromptWars × Catalyst 2026. Empowering seniors to live safely, independently, and with dignity.*
+
