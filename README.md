@@ -28,6 +28,22 @@
   <h3>Clinical Home Dashboard & Real-Time Computer Vision</h3>
   <img src="screenshots/dashboard_preview.jpg" alt="AYUVARA Dashboard Preview" width="850" style="border-radius: 14px; border: 1px solid #D6E6F2; box-shadow: 0 15px 35px rgba(141,180,214,0.3);" />
   <br/><br/>
+
+  <h3>🎥 Live CCTV AI Vision & Real-Time Fall Detection</h3>
+  <p><em>Autonomous YOLOv8-Pose 17-keypoint skeleton tracking detecting critical fall events in real-time</em></p>
+  <table width="100%">
+    <tr>
+      <td width="50%" align="center">
+        <strong>⚠️ Critical Fall Detection &amp; Skeletal Wireframe</strong><br/><br/>
+        <img src="screenshots/cctv_fall_detection.jpg" alt="CCTV Fall Detection Alert" width="420" style="border-radius: 12px; border: 2px solid #ef4444; box-shadow: 0 8px 24px rgba(239,68,68,0.25);" />
+      </td>
+      <td width="50%" align="center">
+        <strong>👁️ Kinematic Pose Classification (Sitting / Gait)</strong><br/><br/>
+        <img src="screenshots/cctv_pose_tracking.jpg" alt="CCTV Pose Estimation" width="420" style="border-radius: 12px; border: 2px solid #38bdf8; box-shadow: 0 8px 24px rgba(56,189,248,0.25);" />
+      </td>
+    </tr>
+  </table>
+  <br/>
   
   <h3>3D Isometric Residence Dwell Matrix</h3>
   <img src="screenshots/floorplan_preview.png" alt="3D Residence Floor Plan Preview" width="750" style="border-radius: 14px; border: 1px solid #D6E6F2; box-shadow: 0 15px 35px rgba(141,180,214,0.3);" />
@@ -57,6 +73,10 @@ AYUVARA has been built and tested to score maximum points across all evaluation 
 ## 🚀 Key Innovations (Beyond Basic Reminders)
 
 ### 1. 🎥 Embedded CCTV AI Vision & Kinematic Posture Guardian (`/cctv`)
+<p align="center">
+  <img src="screenshots/cctv_dashboard_stream.jpg" alt="Embedded CCTV Live Stream on Dashboard" width="750" style="border-radius: 12px; border: 1px solid #D6E6F2; box-shadow: 0 10px 30px rgba(141,180,214,0.3);" />
+</p>
+
 - **YOLOv8-Pose Computer Vision Engine:** Real-time 24 FPS kinematic analysis tracking 17 anatomical keypoints.
 - **Autonomous Fall Detection:** Real-time posture classification (Sitting, Standing/Walking, Resting/Lying, Bending, and Critical Fall Alarm).
 - **Multi-Camera Matrix:** Instant switching between Living Room (Cam 1), Bedroom (Cam 2), Kitchen (Cam 3), and Hallway (Cam 4).
