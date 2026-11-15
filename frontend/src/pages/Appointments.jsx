@@ -77,11 +77,19 @@ export default function Appointments() {
   const [editing, setEditing] = useState(null)
 
   const load = async () => {
-    try { setAppts(await api.getAppointments(patientId)) }
-    catch(e){}
+    try { 
+      const res = await api.getAppointments(patientId)
+      setAppts(Array.isArray(res) ? res : [])
+    }
+    catch(e){
+      setAppts([])
+    }
     setLoading(false)
   }
-  useEffect(() => { load() }, [patientId])
+  useEffect(() => { 
+    if (patientId) load() 
+    else setLoading(false)
+  }, [patientId])
 
   const del = async (id) => {
     if (!confirm('Remove this appointment?')) return
@@ -94,65 +102,77 @@ export default function Appointments() {
     load()
   }
 
-  const upcoming = appts.filter(a => !a.is_completed)
+  const safeAppts = Array.isArray(appts) ? appts : []
+  const upcoming = safeAppts.filter(a => !a?.is_completed)
 
   return (
     <div className="space-y-5">
       <div className="flex flex-wrap items-center justify-between gap-3 pb-3 border-b border-[#D6E6F2]">
         <div>
-          <h1 className="text-xl font-bold text-[#1A2F4C]">Doctor Appointments</h1>
-          <p className="text-xs text-[#4A6B8F]">Upcoming medical visits and specialist checkups</p>
+          <h1 className="text-xl font-bold text-[#1A2F4C]">Physician Appointments</h1>
+          <p className="text-xs text-[#4A6B8F]">Upcoming medical consults, checkups, and clinical calendar</p>
         </div>
-        <button onClick={() => { setEditing(null); setShowForm(true) }} className="btn-primary text-xs py-2 px-4 shadow-sm">
-          <Plus size={14} /> Schedule Visit
+        <button onClick={() => { setEditing(null); setShowForm(true) }} className="btn-primary text-xs py-2 px-4 shadow-sm flex items-center gap-1.5">
+          <Plus size={14} /> Schedule Appointment
         </button>
       </div>
 
-      {loading ? <div className="card animate-pulse h-40 bg-[#F2F7FB]" /> : (
-        <div className="card p-0 overflow-hidden">
-          <table className="clinical-table">
-            <thead>
-              <tr>
-                <th>Date & Time</th>
-                <th>Physician</th>
-                <th>Specialty</th>
-                <th>Facility</th>
-                <th>Prep Instructions</th>
-                <th className="text-right">Action</th>
-              </tr>
-            </thead>
-            <tbody>
-              {upcoming.map(a => (
-                <tr key={a.id} className="hover:bg-[#F2F7FB] transition-colors">
-                  <td className="font-mono font-bold text-[#1A2F4C] whitespace-nowrap">
-                    {a.appt_date} {a.appt_time && `at ${a.appt_time}`}
-                  </td>
-                  <td className="font-bold text-[#1A2F4C]">Dr. {a.doctor_name}</td>
-                  <td className="text-[#4A6B8F]">{a.specialty}</td>
-                  <td className="text-[#1A2F4C]">{a.clinic}</td>
-                  <td className="text-xs text-[#4A6B8F] italic">{a.notes || 'Routine checkup'}</td>
-                  <td className="text-right whitespace-nowrap">
-                    <button onClick={() => complete(a)} className="text-xs text-[#38bdf8] hover:text-[#0284c7] font-bold mr-3">
-                      Mark Done
-                    </button>
-                    <button onClick={() => { setEditing(a); setShowForm(true) }} className="p-1.5 text-[#4A6B8F] hover:text-[#1A2F4C] mr-1">
-                      <Edit3 size={13} />
-                    </button>
-                    <button onClick={() => del(a.id)} className="p-1.5 text-rose-500 hover:text-rose-700">
-                      <Trash2 size={13} />
-                    </button>
-                  </td>
-                </tr>
-              ))}
-              {upcoming.length === 0 && (
-                <tr>
-                  <td colSpan="6" className="text-center py-8 text-[#4A6B8F] text-xs">
-                    No upcoming doctor consultations recorded.
-                  </td>
-                </tr>
+      {loading ? (
+        <div className="card animate-pulse h-40 bg-[#F2F7FB]" />
+      ) : safeAppts.length === 0 ? (
+        <div className="card p-10 text-center bg-white border border-[#D6E6F2]">
+          <Calendar size={36} className="text-[#8DB4D6] mx-auto mb-2 opacity-50" />
+          <p className="text-sm font-bold text-[#1A2F4C]">No upcoming consultations scheduled</p>
+          <p className="text-xs text-[#4A6B8F] mt-1">Tap Schedule Appointment to record upcoming doctor visits.</p>
+        </div>
+      ) : (
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          {safeAppts.map(a => (
+            <div 
+              key={a.id} 
+              className={`card p-4 border transition-all ${
+                a.is_completed ? 'bg-slate-50 border-slate-200 opacity-60' : 'bg-white border-[#D6E6F2] shadow-sm'
+              }`}
+            >
+              <div className="flex items-start justify-between">
+                <div>
+                  <div className="flex items-center gap-2">
+                    <span className="text-sm">👨‍⚕️</span>
+                    <h3 className="font-bold text-sm text-[#1A2F4C]">{a.doctor_name}</h3>
+                  </div>
+                  <div className="text-xs text-[#4A6B8F] mt-0.5">{a.specialty} · {a.clinic}</div>
+                </div>
+                <span className={`badge ${a.is_completed ? 'bg-slate-200 text-slate-700' : 'bg-[#D6E6F2] text-[#1A2F4C]'}`}>
+                  {a.is_completed ? 'Completed' : 'Upcoming'}
+                </span>
+              </div>
+
+              <div className="mt-3 pt-3 border-t border-[#D6E6F2] flex items-center justify-between text-xs">
+                <div className="font-mono text-[#1A2F4C] font-semibold">
+                  📅 {a.appt_date} {a.appt_time && `at ${a.appt_time}`}
+                </div>
+                <div className="flex items-center gap-2">
+                  <button 
+                    onClick={() => complete(a)} 
+                    className={`p-1.5 rounded-lg border text-xs flex items-center gap-1 ${
+                      a.is_completed ? 'border-slate-300 text-slate-600' : 'border-emerald-300 text-emerald-700 bg-emerald-50'
+                    }`}
+                  >
+                    <CheckCircle size={13} />
+                    <span>{a.is_completed ? 'Reopen' : 'Done'}</span>
+                  </button>
+                  <button onClick={() => del(a.id)} className="p-1.5 text-rose-500 hover:text-rose-700">
+                    <Trash2 size={14} />
+                  </button>
+                </div>
+              </div>
+              {a.notes && (
+                <div className="mt-2 text-[11px] text-[#4A6B8F] bg-[#F2F7FB] p-2 rounded-lg">
+                  Notes: {a.notes}
+                </div>
               )}
-            </tbody>
-          </table>
+            </div>
+          ))}
         </div>
       )}
 

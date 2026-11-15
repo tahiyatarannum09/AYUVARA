@@ -1,4 +1,5 @@
 import { useState, useEffect, useCallback } from 'react'
+import { api } from '../api'
 import { useApp } from '../context'
 import { 
   Compass, Radio, Thermometer, Wind, Lightbulb, Lock, Video, 
@@ -231,10 +232,10 @@ export default function LocationTracker() {
   const load = useCallback(async () => {
     try {
       const [cur, hist] = await Promise.all([
-        fetch(`/api/location/${patientId}/current`).then(r => r.json()),
-        fetch(`/api/location/${patientId}/history?limit=10`).then(r => r.json()),
+        api.getLocationCurrent(patientId),
+        api.getLocationHistory(patientId),
       ])
-      setCurrentRoom(cur.room || 'Living Room')
+      setCurrentRoom(cur?.room || 'Living Room')
       setHistory(Array.isArray(hist) ? hist : [])
     } catch (e) {}
   }, [patientId])
@@ -248,11 +249,7 @@ export default function LocationTracker() {
 
   const updateRoom = async (room) => {
     try {
-      await fetch('/api/location/update', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ patient_id: patientId, room, zone: '', source: 'manual', note: '' })
-      })
+      await api.updateLocation({ patient_id: patientId, room, zone: '', source: 'manual', note: '' })
       setCurrentRoom(room)
       load()
     } catch (e) {}
@@ -295,7 +292,12 @@ export default function LocationTracker() {
             {showCamera && (
               <div className="mb-4 p-2 bg-slate-900 rounded-xl text-white shadow-md">
                 <div className="aspect-video bg-black rounded-lg overflow-hidden flex items-center justify-center">
-                  <img src="http://127.0.0.1:8081/mjpeg" alt="Room Camera" className="w-full h-full object-cover" />
+                  <img 
+                    src="http://127.0.0.1:8081/mjpeg" 
+                    alt="Room Camera" 
+                    className="w-full h-full object-cover" 
+                    onError={(e) => { e.currentTarget.src = '/images/cctv_sitting.jpg' }}
+                  />
                 </div>
               </div>
             )}

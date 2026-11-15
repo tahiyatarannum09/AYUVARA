@@ -17,13 +17,21 @@ function MedForm({ initial, patientId, onSave, onClose }) {
   const [form, setForm] = useState(initial || {
     patient_id: patientId, name: '', dosage: '', form: 'tablet',
     instructions: '', color_code: '#8DB4D6', with_food: false,
-    conflict_group: '', start_date: '', times_of_day: []
+    conflict_group: '', start_date: '', times_of_day: ['08:00']
   })
   const [saving, setSaving] = useState(false)
 
-  const toggleTime = (t) => setForm(f => ({...f,
-    times_of_day: f.times_of_day.includes(t) ? f.times_of_day.filter(x=>x!==t) : [...f.times_of_day, t]
-  }))
+  const currentTimes = Array.isArray(form.times_of_day) ? form.times_of_day : []
+
+  const toggleTime = (t) => {
+    setForm(f => {
+      const times = Array.isArray(f.times_of_day) ? f.times_of_day : []
+      return {
+        ...f,
+        times_of_day: times.includes(t) ? times.filter(x => x !== t) : [...times, t]
+      }
+    })
+  }
 
   const save = async () => {
     if (!form.name) return
@@ -71,14 +79,14 @@ function MedForm({ initial, patientId, onSave, onClose }) {
                 <button key={t} onClick={() => toggleTime(t)}
                   type="button"
                   className={`px-3 py-1 rounded-full text-xs font-mono font-bold transition-all
-                    ${form.times_of_day.includes(t) ? 'bg-[#1A2F4C] text-white shadow-sm' : 'bg-[#F2F7FB] text-[#1A2F4C] border border-[#D6E6F2] hover:bg-[#D6E6F2]'}`}>
+                    ${currentTimes.includes(t) ? 'bg-[#1A2F4C] text-white shadow-sm' : 'bg-[#F2F7FB] text-[#1A2F4C] border border-[#D6E6F2] hover:bg-[#D6E6F2]'}`}>
                   {t}
                 </button>
               ))}
             </div>
           </div>
           <label className="flex items-center gap-2 cursor-pointer pt-2">
-            <input type="checkbox" checked={form.with_food} onChange={e=>setForm(f=>({...f,with_food:e.target.checked}))}
+            <input type="checkbox" checked={!!form.with_food} onChange={e=>setForm(f=>({...f,with_food:e.target.checked}))}
               className="w-4 h-4 rounded text-[#8DB4D6] focus:ring-[#8DB4D6]" />
             <span className="text-xs font-semibold text-[#1A2F4C]">Administer with meals</span>
           </label>
@@ -104,17 +112,25 @@ export default function Medications() {
   const load = async () => {
     try {
       const m = await api.getMedications(patientId)
-      setMeds(m)
-    } catch(e){}
+      setMeds(Array.isArray(m) ? m : [])
+    } catch(e){
+      setMeds([])
+    }
     setLoading(false)
   }
-  useEffect(() => { load() }, [patientId])
+
+  useEffect(() => {
+    if (patientId) load()
+    else setLoading(false)
+  }, [patientId])
 
   const del = async (id) => {
     if (!confirm('Remove this medication?')) return
     await api.deleteMedication(id)
     load()
   }
+
+  const safeMeds = Array.isArray(meds) ? meds : []
 
   return (
     <div className="space-y-5">
@@ -123,13 +139,13 @@ export default function Medications() {
           <h1 className="text-xl font-bold text-[#1A2F4C]">Prescription Management</h1>
           <p className="text-xs text-[#4A6B8F]">Active prescriptions and scheduled administration hours</p>
         </div>
-        <button onClick={() => { setEditing(null); setShowForm(true) }} className="btn-primary text-xs py-2 px-4 shadow-sm">
+        <button onClick={() => { setEditing(null); setShowForm(true) }} className="btn-primary text-xs py-2 px-4 shadow-sm flex items-center gap-1.5">
           <Plus size={14} /> Add Medication
         </button>
       </div>
 
       {loading ? <div className="card animate-pulse h-40 bg-[#F2F7FB]" /> : (
-        <div className="card p-0 overflow-hidden">
+        <div className="card p-0 overflow-hidden border-[#D6E6F2]">
           <table className="clinical-table">
             <thead>
               <tr>
@@ -143,12 +159,17 @@ export default function Medications() {
               </tr>
             </thead>
             <tbody>
-              {meds.map((med, idx) => {
+              {safeMeds.map((med, idx) => {
                 const palette = CAPSULE_PALETTES[idx % CAPSULE_PALETTES.length]
                 const dosageNumber = (med.dosage || '').split(' ')[0] || 'mg'
+                const times = Array.isArray(med.times_of_day) 
+                  ? med.times_of_day 
+                  : typeof med.times_of_day === 'string' 
+                    ? JSON.parse(med.times_of_day || '[]') 
+                    : []
 
                 return (
-                  <tr key={med.id} className="hover:bg-[#F2F7FB] transition-colors">
+                  <tr key={med.id || idx} className="hover:bg-[#F2F7FB] transition-colors">
                     <td className="py-2.5">
                       <div className="pill-capsule-3d cursor-pointer" title={med.name}>
                         <div 
@@ -177,7 +198,7 @@ export default function Medications() {
                     <td className="capitalize text-[#4A6B8F] text-xs">{med.form}</td>
                     <td>
                       <div className="flex flex-wrap gap-1">
-                        {med.times_of_day.map(t => (
+                        {times.map(t => (
                           <span key={t} className="badge bg-[#D6E6F2] text-[#1A2F4C] font-mono text-[10px]">
                             {t}
                           </span>

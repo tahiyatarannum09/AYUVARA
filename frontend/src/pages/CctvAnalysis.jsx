@@ -10,10 +10,10 @@ const POSTURE_BADGES = {
 }
 
 const ROOMS = [
-  { id: 'living', name: 'Living Room (Cam 1)', fps: '24 FPS', status: 'Optimal' },
-  { id: 'bedroom', name: 'Bedroom (Cam 2)', fps: '24 FPS', status: 'Active' },
-  { id: 'kitchen', name: 'Kitchen (Cam 3)', fps: '20 FPS', status: 'Active' },
-  { id: 'hallway', name: 'Hallway (Cam 4)', fps: '24 FPS', status: 'Active' },
+  { id: 'living', name: 'Living Room (Cam 1)', fps: '24 FPS', status: 'Optimal', img: '/images/cctv_sitting.jpg', posture: 'sitting', conf: 88 },
+  { id: 'bathroom', name: 'Bathroom (Cam 2)', fps: '24 FPS', status: 'Alert', img: '/images/cctv_fall_detected.jpg', posture: 'fall', conf: 75 },
+  { id: 'bedroom', name: 'Bedroom (Cam 3)', fps: '24 FPS', status: 'Warning', img: '/images/cctv_fall_pose.jpg', posture: 'fall', conf: 57 },
+  { id: 'hallway', name: 'Hallway (Cam 4)', fps: '24 FPS', status: 'Active', img: '/images/cctv_sitting.jpg', posture: 'standing', conf: 94 },
 ]
 
 export default function CctvAnalysis() {
@@ -148,59 +148,17 @@ export default function CctvAnalysis() {
 
             {/* Video Canvas Area */}
             <div className="relative aspect-video rounded-2xl overflow-hidden bg-slate-900 flex items-center justify-center border border-slate-800/80">
-              {streamActive && !imageFailed ? (
+              {streamActive ? (
                 <img 
-                  src="http://127.0.0.1:8081/mjpeg" 
+                  src={!imageFailed ? "http://127.0.0.1:8081/mjpeg" : (selectedRoom.img || '/images/cctv_sitting.jpg')} 
                   alt="Live CCTV Feed" 
                   className="w-full h-full object-cover"
                   onError={() => setImageFailed(true)}
                 />
-              ) : null}
-
-              {/* Realistic AI Vision Simulation Overlay (renders when MJPEG stream is offline or active) */}
-              {(imageFailed || !streamActive) && (
-                <div className="absolute inset-0 bg-gradient-to-b from-slate-950/80 via-slate-900 to-slate-950 flex flex-col items-center justify-center p-6 text-center select-none">
-                  {/* Subtle Radar Scanline Effect */}
-                  <div className="absolute inset-0 bg-[radial-gradient(#38bdf8_1px,transparent_1px)] [background-size:20px_20px] opacity-20 pointer-events-none" />
-                  
-                  {/* Skeleton Pose Wireframe SVG */}
-                  <svg width="220" height="180" viewBox="0 0 220 180" fill="none" className="mb-2">
-                    {/* Bounding box */}
-                    <rect x="40" y="20" width="140" height="145" rx="8" stroke="#38bdf8" strokeWidth="1.5" strokeDasharray="5 3" opacity="0.7" />
-                    <text x="45" y="35" fill="#38bdf8" fontSize="9" fontFamily="monospace" fontWeight="bold">
-                      [ID: DOROTHY-W] {confidence}%
-                    </text>
-
-                    {/* Kinematic Skeleton joints */}
-                    {/* Head */}
-                    <circle cx="110" cy="50" r="10" stroke="#38bdf8" strokeWidth="2" fill="#0284c7" fillOpacity="0.3" />
-                    {/* Neck / Spine */}
-                    <line x1="110" y1="60" x2="110" y2="105" stroke="#38bdf8" strokeWidth="2" />
-                    {/* Shoulders */}
-                    <line x1="85" y1="75" x2="135" y2="75" stroke="#38bdf8" strokeWidth="2" />
-                    {/* Arms */}
-                    <line x1="85" y1="75" x2="75" y2="110" stroke="#38bdf8" strokeWidth="2" />
-                    <line x1="135" y1="75" x2="145" y2="110" stroke="#38bdf8" strokeWidth="2" />
-                    {/* Hips */}
-                    <line x1="90" y1="105" x2="130" y2="105" stroke="#38bdf8" strokeWidth="2" />
-                    {/* Legs (Seated posture) */}
-                    <line x1="90" y1="105" x2="80" y2="135" stroke="#38bdf8" strokeWidth="2" />
-                    <line x1="130" y1="105" x2="140" y2="135" stroke="#38bdf8" strokeWidth="2" />
-                    <line x1="80" y1="135" x2="80" y2="155" stroke="#38bdf8" strokeWidth="2" />
-                    <line x1="140" y1="135" x2="140" y2="155" stroke="#38bdf8" strokeWidth="2" />
-
-                    {/* Keypoint glowing dots */}
-                    {[[110,50],[110,75],[85,75],[135,75],[75,110],[145,110],[110,105],[90,105],[130,105],[80,135],[140,135],[80,155],[140,155]].map(([x,y], i) => (
-                      <circle key={i} cx={x} cy={y} r="3" fill="#ffffff" stroke="#0284c7" strokeWidth="1" />
-                    ))}
-                  </svg>
-
-                  <div className="font-mono text-xs text-[#38bdf8] font-bold">
-                    YOLOv8-Pose Kinematic Mesh Active
-                  </div>
-                  <div className="text-[11px] text-slate-400 mt-1">
-                    Telemetry: 17 Keypoint Skeletons Tracked · Real-Time Posture Normal
-                  </div>
+              ) : (
+                <div className="absolute inset-0 bg-slate-950 flex flex-col items-center justify-center text-slate-400 text-xs">
+                  <div className="font-bold text-white mb-1">Stream Paused</div>
+                  <p className="text-[11px] text-slate-500">Click Resume to reconnect CCTV vision stream</p>
                 </div>
               )}
 

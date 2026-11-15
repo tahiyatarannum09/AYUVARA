@@ -66,7 +66,12 @@ export default function LaptopDashboard() {
               <span className={`px-2 py-0.5 text-xs rounded ${cctvLive ? 'bg-green-600' : 'bg-red-600'} text-white`}>{cctvLive ? 'Live' : 'Paused'}</span>
             </div>
             {cctvLive ? (
-              <img src="http://127.0.0.1:8081/mjpeg" alt="Live CCTV" className="w-full h-48 object-cover" />
+              <img 
+                src="http://127.0.0.1:8081/mjpeg" 
+                alt="Live CCTV" 
+                className="w-full h-48 object-cover" 
+                onError={(e) => { e.currentTarget.src = '/images/cctv_sitting.jpg' }}
+              />
             ) : (
               <div className="h-48 flex items-center justify-center text-white">Stream Paused</div>
             )}

@@ -67,9 +67,9 @@ export default function Home() {
 
   useEffect(() => {
     if (!patientId) return
-    api.getAppointments(patientId).then(setAppts).catch(() => {})
-    api.getTodayAdherence(patientId).then(setDoses).catch(() => {})
-    fetch(`/api/location/${patientId}/current`).then(r => r.json()).then(setLoc).catch(() => {})
+    api.getAppointments(patientId).then(res => setAppts(Array.isArray(res) ? res : [])).catch(() => {})
+    api.getTodayAdherence(patientId).then(res => setDoses(Array.isArray(res) ? res : [])).catch(() => {})
+    api.getLocationCurrent(patientId).then(setLoc).catch(() => {})
   }, [patientId])
 
   useEffect(() => {
@@ -81,11 +81,13 @@ export default function Home() {
     return () => clearInterval(interval)
   }, [])
 
-  const taken       = doses.filter(d => d.status === 'taken').length
-  const total       = doses.length
+  const safeDoses   = Array.isArray(doses) ? doses : []
+  const safeAppts   = Array.isArray(appts) ? appts : []
+  const taken       = safeDoses.filter(d => d.status === 'taken').length
+  const total       = safeDoses.length
   const pct         = total ? Math.round((taken / total) * 100) : 0
-  const nextPending = doses.find(d => d.status === 'pending')
-  const nextAppt    = appts.find(a => !a.is_completed)
+  const nextPending = safeDoses.find(d => d.status === 'pending')
+  const nextAppt    = safeAppts.find(a => !a?.is_completed)
 
   return (
     <div className="space-y-6 pb-8">
